@@ -355,34 +355,6 @@
       color: #1687c8;
     }
 
-    .sing-cue {
-      position: relative;
-      left: auto;
-      top: auto;
-      z-index: 3;
-      width: min(640px, 100%);
-      margin: 0 auto;
-      padding: 18px 24px;
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.96);
-      border: 3px solid rgba(255, 127, 154, 0.28);
-      box-shadow: 0 24px 60px rgba(55, 96, 78, 0.24);
-      text-align: center;
-      font-size: clamp(34px, 5vw, 64px);
-      font-weight: 1000;
-      color: var(--leaf-dark);
-      animation: popIn 260ms ease forwards;
-      pointer-events: none;
-    }
-
-    .sing-cue small {
-      display: block;
-      margin-top: 8px;
-      font-size: clamp(22px, 2.4vw, 34px);
-      color: var(--muted);
-      font-weight: 900;
-    }
-
     .pinyin {
       min-height: 48px;
       margin: 0;
@@ -921,21 +893,6 @@
       }
     }
 
-    .sing-cue {
-      animation-name: cueIn;
-    }
-
-    @keyframes cueIn {
-      from {
-        opacity: 0;
-        transform: translateY(-8px) scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
     .hidden {
       display: none !important;
     }
@@ -1036,7 +993,6 @@
 
         <div class="line-card">
           <div class="line-number" id="lineNumber">1 / 19</div>
-          <div class="sing-cue hidden" id="singCue">🎤 开始！<small>시작! 같이 불러요</small></div>
           <p class="lyric" id="lyricText">昨日像那东流水</p>
           <p class="pinyin" id="pinyinText">Zuó rì xiàng nà dōng liú shuǐ</p>
           <p class="meaning" id="meaningText">어제는 동쪽으로 흐르는 물처럼</p>
@@ -1240,7 +1196,6 @@
     const pinyinToggle = document.getElementById("pinyinToggle");
     const meaningToggle = document.getElementById("meaningToggle");
     const autoNextToggle = document.getElementById("autoNextToggle");
-    const singCue = document.getElementById("singCue");
     const progressToggle = document.getElementById("progressToggle");
     const celebration = document.getElementById("celebration");
     const celebrationEmoji = document.getElementById("celebrationEmoji");
@@ -1357,7 +1312,6 @@
       fillKaraokeChars(lyricText, 0);
       lyricText.classList.remove("karaoke-active");
       lyricText.classList.remove("karaoke-student");
-      singCue.classList.add("hidden");
       pinyinText.textContent = line.pinyin;
       meaningText.textContent = line.meaning;
       progressText.textContent = `${current + 1} / ${lines.length}`;
@@ -1371,7 +1325,6 @@
 
     function playCurrent() {
       stopStudentSing();
-      singCue.classList.add("hidden");
       fillKaraokeChars(lyricText, 0);
       lyricText.classList.add("karaoke-active");
       lyricText.classList.remove("karaoke-student");
@@ -1414,12 +1367,7 @@
 
     function showSingCue() {
       if (app.classList.contains("game-mode")) return;
-      singCue.innerHTML = "🎤 开始！<small>시작! 같이 불러요</small>";
-      singCue.classList.remove("hidden");
-      studentSingTimer = window.setTimeout(() => {
-        singCue.classList.add("hidden");
-        runStudentKaraoke();
-      }, 900);
+      runStudentKaraoke();
     }
 
     function showCelebration(title = "答对了！", text = "唱得越来越棒！", emoji = "🎉") {
